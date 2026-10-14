@@ -1,0 +1,37 @@
+services:
+
+  postgres:
+    image: postgres:16
+    container_name: ai-job-assistant-postgres
+    environment:
+      POSTGRES_DB: ai_job_assistant
+      POSTGRES_USER: jobassistant
+      POSTGRES_PASSWORD: jobassistant
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  backend:
+    image: ai-job-assistant-backend:latest
+    container_name: ai-job-assistant-backend
+    depends_on:
+      - postgres
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/ai_job_assistant
+      SPRING_DATASOURCE_USERNAME: jobassistant
+      SPRING_DATASOURCE_PASSWORD: jobassistant
+      SPRING_AI_OPENAI_API_KEY: ${OPENAI_API_KEY}
+    ports:
+      - "8080:8080"
+
+  frontend:
+    image: ai-job-assistant-frontend:latest
+    container_name: ai-job-assistant-frontend
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+
+volumes:
+  postgres_data:

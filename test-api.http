@@ -1,0 +1,13 @@
+
+### Create a job
+POST http://localhost:8080/api/jobs
+Content-Type: application/json
+
+{
+  "title": "Java Developer",
+  "company": "BMW",
+  "description": "Looking for a Java developer with Spring Boot, REST API, and PostgreSQL experience."
+}
+
+### Get all jobs
+GET http://localhost:8080/api/jobs
